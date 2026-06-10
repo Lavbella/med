@@ -1,0 +1,33 @@
+services:
+  ollama-med:
+    image: ollama/ollama:latest
+    container_name: ollama_medical_service
+    volumes:
+      - ollama_med_data:/root/.ollama
+    ports:
+      - "11435:11434"
+
+  medical-app:
+    build: .
+    image: medical-app:latest 
+    container_name: gemma3_app
+    ports:
+      - "8503:8503"
+    environment:
+      - MODEL_NAME=gemma3:4b
+      - OLLAMA_URL=http://ollama-med:11434/api/generate
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+    # Configuração de memória para os 20GB que reservaste
+    deploy:
+      resources:
+        limits:
+          memory: 12G
+        reservations:
+          memory: 4G       # Garante que ele tem pelo menos 4GB reservados
+    depends_on:
+      - ollama-med
+
+volumes:
+  ollama_med_data:

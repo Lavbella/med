@@ -1,0 +1,9 @@
+streamlit
+requests
+Pillow
+pydicom
+numpy
+python-dotenv
+# Essencial para converter imagens DICOM comprimidas
+pylibjpeg
+pylibjpeg-libjpeg
